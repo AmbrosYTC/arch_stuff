@@ -10,7 +10,7 @@ sudo paccache -r
 
 # 2. Remove Orphaned Packages
 echo "Removing orphaned packages..."
-sudo pacman -Qdtq | sudo pacman -Rns -
+sudo pacman -Qdtq | sudo pacman -Rns
 
 # 3. Clean up the AUR
 echo "Cleaning up the AUR cache..."
