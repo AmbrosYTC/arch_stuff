@@ -1,0 +1,3 @@
+# current working fix for nvidia wayland gdm entry
+
+sudo ln -s /dev/null /etc/udev/rules.d/61-gdm.rules
