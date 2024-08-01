@@ -1,6 +1,6 @@
 # yay-clean command to do system maintenance
 
-echo '#!/bin/bash
+#!/bin/bash
 
 echo "Starting system cleanup..."
 
@@ -22,13 +22,17 @@ sudo paccache -rk1
 
 # 5. Remove Old Kernels
 echo "Listing installed kernels..."
-mhwd-kernel -li
-echo "Removing old kernels..."
+installed_kernels=$(ls /boot/vmlinuz-linux*)
+
 # Assuming you want to remove all but the current kernel
-current_kernel=$(uname -r | sed '"'"'s/\([0-9]\+\.[0-9]\+\.[0-9]\+\)-.*/\1/'"'"')
-installed_kernels=$(mhwd-kernel -li | grep '"'"'installed'"'"' | awk '"'"'{print $2}'"'"' | grep -v "${current_kernel}")
+current_kernel=$(uname -r)
+
 for kernel in ${installed_kernels}; do
-    sudo pacman -R linux${kernel}
+    if [[ "${kernel}" != *"${current_kernel}"* ]]; then
+        kernel_version=$(echo "${kernel}" | sed 's/\/boot\/vmlinuz-linux//')
+        echo "Removing old kernel: ${kernel_version}"
+        sudo pacman -R linux${kernel_version}
+    fi
 done
 
 # 6. Delete Old Configuration Files
@@ -41,4 +45,3 @@ echo "Cleaning temporary files from the home directory..."
 rm -rf ~/Downloads/* ~/Documents/*
 
 echo "System cleanup completed."
-' > ~/cleanup.sh; chmod +x ~/cleanup.sh; echo 'alias yay-clean="~/cleanup.sh"' >> ~/.config/fish/config.fish; source ~/.config/fish/config.fish
