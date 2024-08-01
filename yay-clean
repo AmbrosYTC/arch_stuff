@@ -20,26 +20,11 @@ yay -Yc
 echo "Cleaning pacman cache, keeping only the latest version..."
 sudo paccache -rk1
 
-# 5. Remove Old Kernels
-echo "Listing installed kernels..."
-installed_kernels=$(ls /boot/vmlinuz-linux*)
-
-# Assuming you want to remove all but the current kernel
-current_kernel=$(uname -r)
-
-for kernel in ${installed_kernels}; do
-    if [[ "${kernel}" != *"${current_kernel}"* ]]; then
-        kernel_version=$(echo "${kernel}" | sed '"'"'s/\/boot\/vmlinuz-linux//'"'"')
-        echo "Removing old kernel: ${kernel_version}"
-        sudo pacman -R linux${kernel_version}
-    fi
-done
-
-# 6. Delete Old Configuration Files
+# 5. Delete Old Configuration Files
 echo "Deleting old configuration files older than one year..."
 find ~/.config -type f -mtime +365 -exec rm {} \;
 
-# 7. Review and Clean Your Home Directory
+# 6. Review and Clean Your Home Directory
 echo "Cleaning temporary files from the home directory..."
 # Note: This is a basic cleanup, you might want to customize it further
 rm -rf ~/Downloads/* ~/Documents/*
