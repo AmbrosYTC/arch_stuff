@@ -1,0 +1,20 @@
+# yay-update command to take a snapshot before updating system
+
+echo '#!/bin/bash
+# Function to take a Btrfs snapshot using Timeshift
+take_snapshot() {
+    echo "Taking a Timeshift snapshot..."
+    sudo timeshift --create --comments "Pre-yay update snapshot" --tags D
+    if [ $? -eq 0 ]; then
+        echo "Snapshot taken successfully."
+    else
+        echo "Failed to take snapshot."
+        exit 1
+    fi
+}
+
+# Run the snapshot function
+take_snapshot
+
+# Run yay with passed arguments
+yay "$@"' > ~/yay-snapshot.sh; chmod +x ~/yay-snapshot.sh; echo 'alias yay-update="~/yay-snapshot.sh"' >> ~/.config/fish/config.fish; source ~/.config/fish/config.fish
