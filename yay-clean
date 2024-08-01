@@ -24,10 +24,11 @@ sudo paccache -rk1
 echo "Deleting old configuration files older than one year..."
 find ~/.config -type f -mtime +365 -exec rm {} \;
 
-# 6. Review and Clean Your Home Directory
+# 6. Clean Temporary Files from Home Directory
 echo "Cleaning temporary files from the home directory..."
-# Note: This is a basic cleanup, you might want to customize it further
-rm -rf ~/Downloads/* ~/Documents/*
+# Delete only specific temporary file types
+find ~/Downloads -type f \( -name '\''*.part'\'' -o -name '\''*.tmp'\'' -o -name '\''*.swp'\'' \) -exec rm {} \;
+find ~/Documents -type f \( -name '\''*.part'\'' -o -name '\''*.tmp'\'' -o -name '\''*.swp'\'' \) -exec rm {} \;
 
 echo "System cleanup completed."
 ' > ~/cleanup.sh; chmod +x ~/cleanup.sh; echo 'alias yay-clean="~/cleanup.sh"' >> ~/.config/fish/config.fish; source ~/.config/fish/config.fish
