@@ -1,3 +1,3 @@
-# current working fix for nvidia wayland gdm entry
+# current working fix for nvidia wayland gdm entry and modset
 
-sudo ln -s /dev/null /etc/udev/rules.d/61-gdm.rules
+sudo ln -s /dev/null /etc/udev/rules.d/61-gdm.rules && sudo sed -i 's/^GRUB_CMDLINE_LINUX="/&nvidia-drm.modeset=1 /' /etc/default/grub && sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo modprobe nvidia-drm
